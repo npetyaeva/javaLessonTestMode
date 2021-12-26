@@ -1,13 +1,15 @@
-package ru.netology.utils;
+package ru.netology.page;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import ru.netology.data.RegistrationInfo;
 
 import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
 public class RegistrationPage {
+    private final String currentUrl = "http://localhost:9999/";
     private final SelenideElement loginField = $("[name='login']");
     private final SelenideElement passwordField = $("[name='password']");
     private final SelenideElement button = $("[data-test-id='action-login']");
@@ -15,7 +17,7 @@ public class RegistrationPage {
     private final SelenideElement emptyPassword = $("[data-test-id='password'] .input__sub");
     private final SelenideElement errorLoginPassword = $("[data-test-id='error-notification'] .notification__content");
 
-    public void open(String currentUrl) {
+    public RegistrationPage() {
         Selenide.open(currentUrl);
         loginField.shouldBe(visible);
     }

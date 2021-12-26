@@ -1,17 +1,17 @@
-package ru.netology;
+package ru.netology.test;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.netology.utils.DataGenerator;
-import ru.netology.utils.RegistrationPage;
+import ru.netology.data.DataGenerator;
+import ru.netology.page.RegistrationPage;
 
 public class RegistrationTest {
     private static final DataGenerator dataGenerator = new DataGenerator();
-    private final RegistrationPage registrationPage = new RegistrationPage();
+    private RegistrationPage registrationPage;
 
     @BeforeEach
     void setUp() {
-        registrationPage.open("http://localhost:9999/");
+        registrationPage = new RegistrationPage();
     }
 
     @Test
