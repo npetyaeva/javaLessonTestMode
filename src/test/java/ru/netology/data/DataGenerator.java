@@ -5,20 +5,19 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Locale;
 
 import static io.restassured.RestAssured.given;
 
-@Data
-@NoArgsConstructor
 public class DataGenerator {
-    private RegistrationInfo registrationInfo;
-    private final Faker faker = new Faker(new Locale("en"));
+    private static RegistrationInfo registrationInfo;
+    private static final Faker faker = new Faker(new Locale("en"));
 
-    private final RequestSpecification requestSpec = new RequestSpecBuilder()
+    private DataGenerator() {
+    }
+
+    private static final RequestSpecification requestSpec = new RequestSpecBuilder()
             .setBaseUri("http://localhost")
             .setPort(9999)
             .setAccept(ContentType.JSON)
@@ -26,7 +25,7 @@ public class DataGenerator {
             .log(LogDetail.ALL)
             .build();
 
-    public void sendRequest(RegistrationInfo registeredUser) {
+    public static void sendRequest(RegistrationInfo registeredUser) {
         given()
                 .spec(requestSpec)
                 .body(new RegistrationInfo(registeredUser.getLogin(),
@@ -38,20 +37,19 @@ public class DataGenerator {
                 .statusCode(200);
     }
 
-    public String getRandomLogin() {
+    public static String getRandomLogin() {
         return faker.name().firstName().toLowerCase();
     }
 
-    public String getRandomPassword() {
+    public static String getRandomPassword() {
         return faker.letterify("????????");
     }
 
-    public RegistrationInfo getUser(String status) {
-        var newUser = new RegistrationInfo(getRandomLogin(), getRandomPassword(), status);
-        return newUser;
+    public static RegistrationInfo getUser(String status) {
+        return new RegistrationInfo(getRandomLogin(), getRandomPassword(), status);
     }
 
-    public RegistrationInfo getRegisteredUser(String status) {
+    public static RegistrationInfo getRegisteredUser(String status) {
         var registeredUser = getUser(status);
         sendRequest(registeredUser);
         return registeredUser;

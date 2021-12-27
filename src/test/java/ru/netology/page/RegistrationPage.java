@@ -22,31 +22,29 @@ public class RegistrationPage {
         loginField.shouldBe(visible);
     }
 
-    public DashboardPage registrationValid(RegistrationInfo registeredUser) {
-        loginField.setValue(registeredUser.getLogin());
-        passwordField.setValue(registeredUser.getPassword());
+    private void login(RegistrationInfo registeredUser, String invalidlogin, String invalidPassword) {
+        loginField.setValue(registeredUser.getLogin() + invalidlogin);
+        passwordField.setValue(registeredUser.getPassword() + invalidPassword);
         button.click();
+    }
+
+    public DashboardPage registrationValid(RegistrationInfo registeredUser) {
+        login(registeredUser, "", "");
         return new DashboardPage();
     }
 
     public void registrationInvalid(RegistrationInfo registeredUser) {
-        loginField.setValue(registeredUser.getLogin());
-        passwordField.setValue(registeredUser.getPassword());
-        button.click();
+        login(registeredUser, "", "");
         errorLoginPassword.shouldBe(exactText("Ошибка! Пользователь заблокирован"));
     }
 
-    public void loginInvalid(RegistrationInfo registrationUser) {
-        loginField.setValue(registrationUser.getLogin() + "0");
-        passwordField.setValue(registrationUser.getPassword());
-        button.click();
+    public void loginInvalid(RegistrationInfo registeredUser) {
+        login(registeredUser, "0", "");
         errorLoginPassword.shouldBe(exactText("Ошибка! Неверно указан логин или пароль"));
     }
 
-    public void passwordInvalid(RegistrationInfo registrationUser) {
-        loginField.setValue(registrationUser.getLogin());
-        passwordField.setValue(registrationUser.getPassword() + "0");
-        button.click();
+    public void passwordInvalid(RegistrationInfo registeredUser) {
+        login(registeredUser,"", "0");
         errorLoginPassword.shouldBe(exactText("Ошибка! Неверно указан логин или пароль"));
     }
 
