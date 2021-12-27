@@ -39,7 +39,7 @@ public class RegistrationPage {
     }
 
     public void loginInvalid(RegistrationInfo registeredUser) {
-        login(registeredUser, "0", "");
+        login(registeredUser,"0", "");
         errorLoginPassword.shouldBe(exactText("Ошибка! Неверно указан логин или пароль"));
     }
 
