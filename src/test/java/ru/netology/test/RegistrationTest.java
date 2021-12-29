@@ -3,8 +3,9 @@ package ru.netology.test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.data.DataGenerator;
-import ru.netology.data.RegistrationInfo;
 import ru.netology.page.RegistrationPage;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RegistrationTest {
     private RegistrationPage registrationPage;
@@ -23,35 +24,41 @@ public class RegistrationTest {
     @Test
     void shouldCheckRegistrationBlockedUser() {
         var registeredUser = DataGenerator.getRegisteredUser("blocked");
-        registrationPage.registrationInvalid(registeredUser);
+        String actual = registrationPage.registrationInvalid(registeredUser);
+        assertEquals("Ошибка! Пользователь заблокирован", actual);
     }
 
     @Test
     void shouldCheckRegistrationWithInvalidLogin() {
-        var registeredUser = DataGenerator.getRegisteredUser("active");
-        registrationPage.loginInvalid(registeredUser);
+        var registeredUser = DataGenerator.getRegisteredUserInvalidLogin("active");
+        String actual = registrationPage.loginOrPasswordInvalid(registeredUser);
+        assertEquals("Ошибка! Неверно указан логин или пароль", actual);
     }
 
     @Test
     void shouldCheckRegistrationWithInvalidPassword() {
-        var registeredUser = DataGenerator.getRegisteredUser("active");
-        registrationPage.passwordInvalid(registeredUser);
+        var registeredUser = DataGenerator.getRegisteredUserInvalidPassword("active");
+        String actual = registrationPage.loginOrPasswordInvalid(registeredUser);
+        assertEquals("Ошибка! Неверно указан логин или пароль", actual);
     }
 
     @Test
     void shouldCheckSendEmptyForm() {
-        registrationPage.emptyFields();
+        String actual = registrationPage.emptyFields();
+        assertEquals("Поле обязательно для заполнения", actual);
     }
 
     @Test
     void shouldCheckSendEmptyLogin() {
         var onlyPassword = DataGenerator.getRandomPassword();
-        registrationPage.emptyLogin(onlyPassword);
+        String actual = registrationPage.emptyLogin(onlyPassword);
+        assertEquals("Поле обязательно для заполнения", actual);
     }
 
     @Test
     void shouldCheckSendEmptyPassword() {
         var onlyLogin = DataGenerator.getRandomLogin();
-        registrationPage.emptyPassword(onlyLogin);
+        String actual = registrationPage.emptyPassword(onlyLogin);
+        assertEquals("Поле обязательно для заполнения", actual);
     }
 }

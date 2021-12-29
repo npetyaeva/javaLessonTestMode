@@ -54,4 +54,17 @@ public class DataGenerator {
         sendRequest(registeredUser);
         return registeredUser;
     }
+
+    public static RegistrationInfo getRegisteredUserInvalidLogin(String status) {
+        var registeredUser = getUser(status);
+        sendRequest(registeredUser);
+        return new RegistrationInfo(registeredUser.getLogin() + "0",
+                registeredUser.getPassword(), registeredUser.getStatus());
+    }
+
+    public static RegistrationInfo getRegisteredUserInvalidPassword(String status) {
+        var registeredUser = getUser(status);
+        return new RegistrationInfo(registeredUser.getLogin(),
+                registeredUser.getPassword() + "0", registeredUser.getStatus());
+    }
 }

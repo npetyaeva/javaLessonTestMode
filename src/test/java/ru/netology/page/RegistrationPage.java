@@ -4,7 +4,6 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import ru.netology.data.RegistrationInfo;
 
-import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
@@ -22,47 +21,47 @@ public class RegistrationPage {
         loginField.shouldBe(visible);
     }
 
-    private void login(RegistrationInfo registeredUser, String invalidlogin, String invalidPassword) {
-        loginField.setValue(registeredUser.getLogin() + invalidlogin);
-        passwordField.setValue(registeredUser.getPassword() + invalidPassword);
+    private void login(RegistrationInfo registeredUser) {
+        loginField.setValue(registeredUser.getLogin());
+        passwordField.setValue(registeredUser.getPassword());
         button.click();
     }
 
     public DashboardPage registrationValid(RegistrationInfo registeredUser) {
-        login(registeredUser, "", "");
+        login(registeredUser);
         return new DashboardPage();
     }
 
-    public void registrationInvalid(RegistrationInfo registeredUser) {
-        login(registeredUser, "", "");
-        errorLoginPassword.shouldBe(exactText("Ошибка! Пользователь заблокирован"));
+    public String registrationInvalid(RegistrationInfo registeredUser) {
+        login(registeredUser);
+        errorLoginPassword.shouldBe(visible);
+        return errorLoginPassword.text();
     }
 
-    public void loginInvalid(RegistrationInfo registeredUser) {
-        login(registeredUser,"0", "");
-        errorLoginPassword.shouldBe(exactText("Ошибка! Неверно указан логин или пароль"));
+    public String loginOrPasswordInvalid(RegistrationInfo registeredUser) {
+        login(registeredUser);
+        errorLoginPassword.shouldBe(visible);
+        return errorLoginPassword.text();
     }
 
-    public void passwordInvalid(RegistrationInfo registeredUser) {
-        login(registeredUser,"", "0");
-        errorLoginPassword.shouldBe(exactText("Ошибка! Неверно указан логин или пароль"));
-    }
-
-    public void emptyFields() {
+    public String emptyFields() {
         button.click();
-        emptyLogin.shouldBe(exactText("Поле обязательно для заполнения"));
+        emptyLogin.shouldBe(visible);
+        return emptyLogin.text();
     }
 
-    public void emptyLogin(String password) {
+    public String emptyLogin(String password) {
         passwordField.setValue(password);
         button.click();
-        emptyLogin.shouldBe(exactText("Поле обязательно для заполнения"));
+        emptyLogin.shouldBe(visible);
+        return emptyLogin.text();
     }
 
-    public void emptyPassword(String login) {
+    public String emptyPassword(String login) {
         loginField.setValue(login);
         button.click();
-        emptyPassword.shouldBe(exactText("Поле обязательно для заполнения"));
+        emptyPassword.shouldBe(visible);
+        return emptyPassword.text();
     }
 
 }
